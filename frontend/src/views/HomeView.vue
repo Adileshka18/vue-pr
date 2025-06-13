@@ -1,31 +1,36 @@
 <template>
   <v-container>
-    <!-- Карусель -->
+    <!-- Карусель объявлений -->
     <v-row justify="center">
       <v-col cols="12" xs="12">
         <v-carousel>
           <v-carousel-item
-            v-for="(item, index) in carouselItems"
-            :key="index"
-            :src="item.src"
+            v-for="ad in ads"
+            :key="ad.id"
+            :src="ad.src"
             cover
-          ></v-carousel-item>
+          >
+            <v-sheet height="100%" class="d-flex flex-column align-center justify-center">
+              <h3 class="text-h5 font-weight-bold white--text">{{ ad.title }}</h3>
+              <p class="text-subtitle-1 white--text">{{ ad.desc }}</p>
+            </v-sheet>
+          </v-carousel-item>
         </v-carousel>
       </v-col>
     </v-row>
   </v-container>
 
-  <!-- Grid с карточками продуктов -->
+  <!-- Grid объявлений -->
   <v-container>
     <v-row>
-      <v-col v-for="(product, index) in products" :key="index" cols="12" sm="6" md="4">
+      <v-col v-for="ad in ads" :key="ad.id" cols="12" sm="6" md="4">
         <v-card>
-          <v-img :src="product.image" height="200px"></v-img>
+          <v-img :src="ad.src" height="200px"></v-img>
           <v-card-title>
-            <h3 class="headline mb-0">{{ product.title }}</h3>
+            <h3 class="headline mb-0">{{ ad.title }}</h3>
           </v-card-title>
           <v-card-subtitle>
-            {{ product.description }}
+            {{ ad.desc }}
           </v-card-subtitle>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -42,26 +47,34 @@
 export default {
   data() {
     return {
-      carouselItems: [
-        { src: "https://via.placeholder.com/800x400?text=Slide+1" },
-        { src: "https://via.placeholder.com/800x400?text=Slide+2" },
-        { src: "https://via.placeholder.com/800x400?text=Slide+3" }
-      ],
-      products: [
+      ads: [
         {
-          title: "Продукт 1",
-          description: "Описание продукта 1",
-          image: "https://picsum.photos/800/400"
+          title: "First",
+          desc: "First Desc",
+          promo: true,
+          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
+          id: "1"
         },
         {
-          title: "Продукт 2",
-          description: "Описание продукта 2",
-          image: "https://via.placeholder.com/400x200"
+          title: "Second",
+          desc: "Second Desc",
+          promo: true,
+          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
+          id: "2"
         },
         {
-          title: "Продукт 3",
-          description: "Описание продукта 3",
-          image: "https://via.placeholder.com/400x200"
+          title: "Third",
+          desc: "Third Desc",
+          promo: true,
+          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
+          id: "3"
+        },
+        {
+          title: "Fourth",
+          desc: "Fourth Desc",
+          promo: true,
+          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
+          id: "4"
         }
       ]
     };
