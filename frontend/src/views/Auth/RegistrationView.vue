@@ -7,7 +7,7 @@
               <v-toolbar-title>Registration</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <v-form ref="form" v-model="valid">
+              <v-form ref="form" v-model="valid" lazy-validation>
                 <v-text-field
                   prepend-icon="mdi-account" 
                   name="email" 
@@ -24,6 +24,15 @@
                   type="password" 
                   v-model="password"
                   :rules="passwordRules">
+                </v-text-field>
+  
+                <v-text-field  
+                  prepend-icon="mdi-lock" 
+                  name="confirm-password" 
+                  label="Confirm Password" 
+                  type="password" 
+                  v-model="confirmPassword"
+                  :rules="confirmPasswordRules">
                 </v-text-field>
               </v-form> 
             </v-card-text>
@@ -48,6 +57,7 @@
       return {
         email: "",
         password: "",
+        confirmPassword: "",
         valid: false,
         emailRules: [
           v => !!v || "E-mail is required",
@@ -55,9 +65,17 @@
         ],
         passwordRules: [
           v => !!v || "Password is required",
-          v => (v && v.length >= 6) || "Password must be more or equal than 6 characters"
+          v => (v && v.length >= 6) || "Password must be at least 6 characters"
         ]
       } 	
+    },
+    computed: {
+      confirmPasswordRules() {
+        return [
+          v => !!v || "Password confirmation is required",
+          v => v === this.password || "Passwords must match"
+        ];
+      }
     },
     methods: {
       onSubmit() {
@@ -65,8 +83,8 @@
           const user = {
             email: this.email,
             password: this.password
-          }
-          console.log(user)
+          };
+          console.log(user);
         }
       }
     }
