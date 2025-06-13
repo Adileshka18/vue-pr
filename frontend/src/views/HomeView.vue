@@ -22,31 +22,25 @@
   </v-container>
 
   <!-- Grid объявлений -->
-  <v-container grid-list-lg>
-    <v-layout row wrap>
-      <v-flex
-        v-for="ad in ads"
-        :key="ad.id"
-        xs12
-        sm6
-        md4
-      >
+  <v-container>
+    <v-row>
+      <v-col v-for="ad in ads" :key="ad.id" cols="12" sm="6" md="4">
         <v-card>
           <v-img :src="ad.src" height="200px"></v-img>
           <v-card-title>
-            <div>
-              <h3 class="headline mb-0">{{ ad.title }}</h3>
-              <div>{{ ad.desc }}</div>
-            </div>
+            <h3 class="headline mb-0">{{ ad.title }}</h3>
           </v-card-title>
+          <v-card-subtitle>
+            {{ ad.desc }}
+          </v-card-subtitle>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn text :to="'/ad/' + ad.id">Open</v-btn>
-            <v-btn raised color="primary">Buy</v-btn>
+            <v-btn color="primary">Buy</v-btn>
           </v-card-actions>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
