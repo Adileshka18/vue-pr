@@ -10,10 +10,11 @@
             :src="ad.src"
             cover
           >
-            <v-sheet height="100%" class="d-flex flex-column align-center justify-center">
-              <h3 class="text-h5 font-weight-bold white--text">{{ ad.title }}</h3>
-              <p class="text-subtitle-1 white--text">{{ ad.desc }}</p>
-            </v-sheet>
+            <div class="ad-link">
+              <v-btn class="error" :to="'/ad/' + ad.id">
+                {{ ad.title }}
+              </v-btn>
+            </div>
           </v-carousel-item>
         </v-carousel>
       </v-col>
@@ -34,7 +35,7 @@
           </v-card-subtitle>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn text>Open</v-btn>
+            <v-btn text to="'/ad/' + ad.id">Open</v-btn>
             <v-btn color="primary">Buy</v-btn>
           </v-card-actions>
         </v-card>
@@ -81,3 +82,16 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.ad-link {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  transform: translate(-50%, 0);
+  padding: 5px 15px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+</style>
