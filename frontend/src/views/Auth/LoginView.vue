@@ -7,7 +7,7 @@
               <v-toolbar-title>Login</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <v-form v-model="valid" ref="form">
+              <v-form ref="form" v-model="valid">
                 <v-text-field
                   prepend-icon="mdi-account" 
                   name="email" 
@@ -22,14 +22,19 @@
                   name="password" 
                   label="Password" 
                   type="password" 
-                  v-model="password" 
+                  v-model="password"
                   :rules="passwordRules">
                 </v-text-field>
               </v-form> 
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary">Login</v-btn>
+              <v-btn 
+                color="primary"
+                @click="onSubmit"
+                :disabled="!valid">
+                Login
+              </v-btn>
             </v-card-actions>	
           </v-card>
         </v-col>
@@ -50,9 +55,20 @@
         ],
         passwordRules: [
           v => !!v || "Password is required",
-          v => (v && v.length >= 6) || "Password must be at least 6 characters long"
+          v => (v && v.length >= 6) || "Password must be more or equal than 6 characters"
         ]
       } 	
+    },
+    methods: {
+      onSubmit() {
+        if (this.$refs.form.validate()) {
+          const user = {
+            email: this.email,
+            password: this.password
+          }
+          console.log(user)
+        }
+      }
     }
   } 
   </script>
