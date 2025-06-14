@@ -83,6 +83,9 @@ class User {
           throw error;
         }
       },
+      logoutUser({commit}) {
+        commit('setUser', null)
+      }
     },
     getters: {
       user(state) {
@@ -94,8 +97,8 @@ class User {
       error(state) {
         return state.error;
       },
-      isUserLoggedIn (state) {
+      isUserLoggedln(state) {
         return state.user !== null
-      },
+      }
     },
   };
