@@ -2,17 +2,13 @@
     <v-container>
       <v-row justify="center">
         <v-col cols="12" sm="8" lg="6">
-          <h1 class="text--secondary mb-3 mt-3">My Ads</h1>
-  
+          <h1 class="text--secondary mb-3 mt-3">My ads</h1>
           <v-card v-for="ad in ads" :key="ad.id" class="mb-3" max-width="1000">
             <v-row>
-              <!-- Блок с картинкой -->
-              <v-col cols="4">
+              <v-col xs="4">
                 <v-img :src="ad.src" height="175px" cover></v-img>
               </v-col>
-  
-              <!-- Блок с текстом и кнопкой -->
-              <v-col cols="8">
+              <v-col xs="8">
                 <h2 class="text--primary">{{ ad.title }}</h2>
                 <p style="height: 85px; overflow: hidden; text-overflow: ellipsis;">
                   {{ ad.desc }}
@@ -26,7 +22,6 @@
               </v-col>
             </v-row>
           </v-card>
-  
         </v-col>
       </v-row>
     </v-container>
@@ -38,26 +33,36 @@
       return {
         ads: [
           {
-            title: "First Ad",
-            desc: "This is the first ad description.",
+            title: "First",
+            desc: "First Desc",
             promo: true,
             src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
-            id: "1"
+            id: "1",
           },
           {
-            title: "Second Ad",
-            desc: "This is the second ad description.",
-            promo: false,
+            title: "Second",
+            desc: "Second Desc",
+            promo: true,
             src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
-            id: "2"
-          }
-        ]
+            id: "2",
+          },
+          {
+            title: "Third",
+            desc: "Third Desc",
+            promo: true,
+            src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
+            id: "3",
+          },
+          {
+            title: "Fourth",
+            desc: "Fourth Desc",
+            promo: true,
+            src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
+            id: "4",
+          },
+        ],
       };
-    }
+    },
   };
   </script>
-  
-  <style scoped>
-
-  </style>
   
