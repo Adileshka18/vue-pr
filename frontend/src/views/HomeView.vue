@@ -5,7 +5,7 @@
       <v-col cols="12" xs="12">
         <v-carousel>
           <v-carousel-item
-            v-for="ad in ads"
+            v-for="ad in promoAds"
             :key="ad.id"
             :src="ad.src"
             cover
@@ -19,66 +19,46 @@
         </v-carousel>
       </v-col>
     </v-row>
-  </v-container>
 
-  <!-- Grid объявлений -->
-  <v-container>
-    <v-row>
-      <v-col v-for="ad in ads" :key="ad.id" cols="12" sm="6" md="4">
-        <v-card>
-          <v-img :src="ad.src" height="200px"></v-img>
-          <v-card-title>
-            <h3 class="headline mb-0">{{ ad.title }}</h3>
-          </v-card-title>
-          <v-card-subtitle>
-            {{ ad.desc }}
-          </v-card-subtitle>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn text :to="'/ad/' + ad.id">Open</v-btn>
-            <v-btn color="primary">Buy</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
+    <!-- Grid объявлений -->
+    <v-container grid-list-lg>
+      <v-row wrap>
+        <v-col
+          v-for="ad in ads"
+          :key="ad.id"
+          :cols="12"
+          :sm="6"
+          :md="4"
+        >
+          <v-card>
+            <v-img :src="ad.src" height="200px"></v-img>
+            <v-card-title>
+              <div>
+                <h3 class="headline mb-0">{{ ad.title }}</h3>
+                <div>{{ ad.desc }}</div>
+              </div>
+            </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text :to="'/ad/' + ad.id">Open</v-btn>
+              <v-btn raised color="primary">Buy</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-container>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      ads: [
-        {
-          title: "First",
-          desc: "First Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
-          id: "1"
-        },
-        {
-          title: "Second",
-          desc: "Second Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
-          id: "2"
-        },
-        {
-          title: "Third",
-          desc: "Third Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
-          id: "3"
-        },
-        {
-          title: "Fourth",
-          desc: "Fourth Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
-          id: "4"
-        }
-      ]
-    };
+  computed: {
+    promoAds() {
+      return this.$store.getters.promoAds;
+    },
+    ads() {
+      return this.$store.getters.ads;
+    }
   }
 };
 </script>
