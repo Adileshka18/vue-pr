@@ -41,7 +41,8 @@
               <v-btn 
                 color="primary"
                 @click="onSubmit"
-                :disabled="!valid">
+                :loading="loading"
+                :disabled="!valid || loading">
                 Create Account
               </v-btn>
             </v-card-actions>	
@@ -70,12 +71,9 @@
       } 	
     },
     computed: {
-      confirmPasswordRules() {
-        return [
-          v => !!v || "Password confirmation is required",
-          v => v === this.password || "Passwords must match"
-        ];
-      }
+      loading() {
+            return this.$store.getters.loading
+        }
     },
     methods: {
       onSubmit() {
