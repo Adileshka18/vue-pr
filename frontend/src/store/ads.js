@@ -40,6 +40,9 @@ export default {
       },
       myAds(state) {
         return state.ads;
+      },
+      adById: (state) => (id) => {
+        return state.ads.find(ad => ad.id === id) || null;
       }
     }
   };
