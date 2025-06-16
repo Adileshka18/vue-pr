@@ -30,43 +30,9 @@ import { mapGetters } from 'vuex'; // Импорт mapGetters
 
 export default {
   computed: {
-    ...mapGetters('ads', ['ads']), // Подключение ads из store
-    // Резервные данные, если store пуст
-    defaultAds() {
-      return [
-        {
-          title: "First",
-          desc: "First Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
-          id: "1"
-        },
-        {
-          title: "Second",
-          desc: "Second Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
-          id: "2"
-        },
-        {
-          title: "Third",
-          desc: "Third Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
-          id: "3"
-        },
-        {
-          title: "Fourth",
-          desc: "Fourth Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
-          id: "4"
-        }
-      ];
-    },
+    ...mapGetters('ads', ['myAds']), // Подключение myAds из store
     ads() {
-      // Возвращаем данные из store, если они есть, иначе резервные
-      return this.$store.getters['ads/ads'].length > 0 ? this.$store.getters['ads/ads'] : this.defaultAds;
+      return this.myAds; // Используем отфильтрованные объявления текущего пользователя
     }
   }
 };

@@ -84,6 +84,11 @@ export default {
     },
     adById: (state) => (id) => {
       return state.ads.find(ad => ad.id === id) || null; // Возвращаем null, если не найдено
+    },
+    myAds(state, getters, rootState, rootGetters) {
+      const user = rootGetters['user/user']; // Получаем текущего пользователя
+      const userId = user ? user.id : null;
+      return state.ads.filter(ad => ad.userId === userId); // Фильтруем объявления по userId
     }
   }
 };
