@@ -107,10 +107,11 @@ export default {
         this.$store.dispatch("ads/createAd", ad) // Используем namespaced путь
           .then(() => {
             console.log('Ad created:', ad);
-            this.$router.push("/");
+            this.$router.push("/list"); // Редирект на /list при успехе
           })
           .catch((error) => {
             console.error('Error creating ad:', error.message);
+            // Ошибка уже устанавливается в store через setError, отображается через computed.error
           });
       }
     }
