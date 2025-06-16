@@ -1,104 +1,101 @@
 class User {
-    constructor(id, email, password) {
-      this.id = id;
-      this.email = email;
-      this.password = password;
-    }
+  constructor(id, email, password) {
+    this.id = id;
+    this.email = email;
+    this.password = password;
   }
-  
-  export default {
-    state: {
-      user: null,
-      loading: false,
-      error: null,
+}
+
+export default {
+  state: {
+    user: null,
+  },
+  mutations: {
+    setUser(state, payload) {
+      console.log('Setting user:', payload);
+      state.user = payload;
     },
-    mutations: {
-      setUser(state, payload) {
-        console.log(payload);
-        state.user = payload;
-      },
-      clearError(state) {
-        state.error = null;
-      },
-      setLoading(state, payload) {
-        state.loading = payload;
-      },
-      setError(state, payload) {
-        state.error = payload;
-      },
-    },
-    actions: {
-      async registerUser({ commit }, { email, password }) {
-        commit('clearError');
-        commit('setLoading', true);
-  
-        try {
-          // Имитация запроса на сервер
-          await new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const isRequestOk = Math.random() > 0.5; 
-              if (isRequestOk) {
-                resolve();
-              } else {
-                reject(new Error('Ошибка регистрации'));
-              }
-            }, 3000); 
-          });
-  
-          // Если запрос успешен
-          commit('setUser', new User(1, email, password));
-          commit('setLoading', false);
-        } catch (error) {
-          // Если запрос неудачен
-          commit('setLoading', false);
-          commit('setError', error.message);
-          throw error;
-        }
-      },
-  
-      async loginUser({ commit }, { email, password }) {
-        commit('clearError');
-        commit('setLoading', true);
-  
-        try {
-          // Имитация запроса на сервер
-          await new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const isRequestOk = Math.random() > 0.5; 
-              if (isRequestOk) {
-                resolve();
-              } else {
-                reject(new Error('Ошибка логина или пароля'));
-              }
-            }, 3000); 
-          });
-  
-          // Если запрос успешен
-          commit('setUser', new User(1, email, password));
-          commit('setLoading', false);
-        } catch (error) {
-          // Если запрос неудачен
-          commit('setLoading', false);
-          commit('setError', error.message);
-          throw error;
-        }
-      },
-      logoutUser({commit}) {
-        commit('setUser', null)
+  },
+  actions: {
+    // Инициализация пользователя из localStorage при старте
+    initializeUser({ commit }) {
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      if (storedUser) {
+        commit('setUser', new User(storedUser.id, storedUser.email, storedUser.password));
       }
     },
-    getters: {
-      user(state) {
-        return state.user;
-      },
-      loading(state) {
-        return state.loading;
-      },
-      error(state) {
-        return state.error;
-      },
-      isUserLoggedln(state) {
-        return state.user !== null
+
+    async registerUser({ commit }, { email, password }) {
+      commit('shared/clearError'); // Полный путь
+      commit('shared/setLoading', true); // Полный путь
+
+      try {
+        await new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (email && password) {
+              resolve();
+            } else {
+              reject(new Error('Заполните email и пароль'));
+            }
+          }, 3000);
+        });
+
+        const newUser = new User(Date.now(), email, password);
+        commit('setUser', newUser);
+        localStorage.setItem('user', JSON.stringify(newUser));
+        commit('shared/setLoading', false); // Полный путь
+        return Promise.resolve(newUser);
+      } catch (error) {
+        commit('shared/setLoading', false); // Полный путь
+        commit('shared/setError', error.message); // Полный путь
+        throw error;
       }
     },
-  };
+
+    async loginUser({ commit }, { email, password }) {
+      commit('shared/clearError'); // Полный путь
+      commit('shared/setLoading', true); // Полный путь
+
+      try {
+        let storedUser = JSON.parse(localStorage.getItem('user'));
+        if (!storedUser) {
+          // Если пользователя нет в localStorage, создаём нового для теста
+          storedUser = new User(Date.now(), email, password);
+          localStorage.setItem('user', JSON.stringify(storedUser));
+        }
+        await new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (storedUser.email === email && storedUser.password === password) {
+              resolve();
+            } else {
+              reject(new Error('Неверный email или пароль'));
+            }
+          }, 3000);
+        });
+
+        commit('setUser', storedUser);
+        commit('shared/setLoading', false); // Полный путь
+        return Promise.resolve();
+      } catch (error) {
+        commit('shared/setLoading', false); // Полный путь
+        commit('shared/setError', error.message); // Полный путь
+        throw error;
+      }
+    },
+
+    logoutUser({ commit }) {
+      commit('setUser', null);
+      localStorage.removeItem('user');
+      commit('shared/clearError'); // Полный путь
+      return Promise.resolve();
+    },
+  },
+  getters: {
+    user(state) {
+      return state.user;
+    },
+    isUserLoggedIn(state) {
+      return state.user !== null;
+    },
+  },
+};

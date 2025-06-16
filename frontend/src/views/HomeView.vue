@@ -9,7 +9,13 @@
             :key="ad.id"
             :src="ad.src"
             cover
+            @error="onImageError(ad)"
           >
+            <template v-slot:placeholder>
+              <v-row class="fill-height ma-0" align="center" justify="center">
+                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+              </v-row>
+            </template>
             <div class="ad-link">
               <v-btn class="error" :to="'/ad/' + ad.id">
                 {{ ad.title }}
@@ -31,7 +37,13 @@
           :md="4"
         >
           <v-card>
-            <v-img :src="ad.src" height="200px"></v-img>
+            <v-img :src="ad.src" height="200px" @error="onImageError(ad)">
+              <template v-slot:placeholder>
+                <v-row class="fill-height ma-0" align="center" justify="center">
+                  <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                </v-row>
+              </template>
+            </v-img>
             <v-card-title>
               <div>
                 <h3 class="headline mb-0">{{ ad.title }}</h3>
@@ -51,15 +63,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'; // Импорт mapGetters
+
 export default {
   computed: {
-    promoAds() {
-      return this.$store.getters.promoAds;
+    ...mapGetters('ads', ['promoAds', 'ads']) // Используем mapGetters с namespaced модулем
+  },
+  methods: {
+    onImageError(ad) {
+      console.error(`Failed to load image for ad: ${ad.title}, src: ${ad.src}`);
+      ad.src = 'https://via.placeholder.com/200'; // Запасное изображение
     },
-    ads() {
-      return this.$store.getters.ads;
-    }
-  }
+  },
 };
 </script>
 

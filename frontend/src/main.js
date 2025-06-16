@@ -1,13 +1,19 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import vuetify from './plugins/vuetify'
-import { loadFonts } from './plugins/webfontloader'
-import router from './router'
-import store from './store'
+import { createApp } from 'vue';
+import App from './App.vue';
+import vuetify from './plugins/vuetify';
+import { loadFonts } from './plugins/webfontloader';
+import router from './router';
+import store from './store';
 
-loadFonts()
+loadFonts();
 
-createApp(App).use(router)
-  .use(vuetify)
-  .use(store)
-  .mount('#app')
+const init = async () => {
+  await store.dispatch('user/initializeUser'); // Асинхронная инициализация пользователя
+  createApp(App)
+    .use(router)
+    .use(vuetify)
+    .use(store)
+    .mount('#app');
+};
+
+init();

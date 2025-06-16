@@ -1,60 +1,55 @@
 export default {
-    state: {
-      ads: [
-        {
-          title: "First",
-          desc: "First Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
-          id: "1"
-        },
-        {
-          title: "Second",
-          desc: "Second Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
-          id: "2"
-        },
-        {
-          title: "Third",
-          desc: "Third Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
-          id: "3"
-        },
-        {
-          title: "Fourth",
-          desc: "Fourth Desc",
-          promo: true,
-          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
-          id: "4"
-        }
-      ]
-    },
-    mutations: {
-            createAd(state, payload){
-                state.ads.push(payload)
-            }
-        },
-        actions: {
-            createAd({commit},payload){
-                payload.id = Math.random()
-                commit('createAd', payload)
-            }
-        },
-    getters: {
-      ads(state) {
-        return state.ads;
+  state: {
+    ads: [
+      {
+        title: "First",
+        desc: "First Desc",
+        promo: true,
+        src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
+        id: "1"
       },
-      promoAds(state) {
-        return state.ads.filter(ad => ad.promo);
+      {
+        title: "Second",
+        desc: "Second Desc",
+        promo: true,
+        src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
+        id: "2"
       },
-      myAds(state) {
-        return state.ads;
+      {
+        title: "Third",
+        desc: "Third Desc",
+        promo: true,
+        src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
+        id: "3"
       },
-      adById: (state) => (id) => {
-        return state.ads.find(ad => ad.id === id) || null;
+      {
+        title: "Fourth",
+        desc: "Fourth Desc",
+        promo: true,
+        src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
+        id: "4"
       }
+    ]
+  },
+  mutations: {
+    addAd(state, ad) {
+      state.ads.push({ ...ad, id: Date.now().toString() }); // Генерируем уникальный ID
     }
-  };
-  
+  },
+  actions: {
+    createAd({ commit }, ad) {
+      commit('addAd', ad);
+    }
+  },
+  getters: {
+    ads(state) {
+      return state.ads;
+    },
+    promoAds(state) {
+      return state.ads.filter(ad => ad.promo);
+    },
+    adById: (state) => (id) => {
+      return state.ads.find(ad => ad.id === id) || null; // Возвращаем null, если не найдено
+    }
+  }
+};
