@@ -67,6 +67,13 @@
         </v-btn>
       </v-col>
     </v-row>
+
+    <!-- Отображение ошибки, если она есть -->
+    <v-row v-if="error" class="mt-3">
+      <v-col cols="8" offset="2">
+        <v-alert type="error">{{ error }}</v-alert>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -77,9 +84,16 @@ export default {
       valid: false,
       title: "",
       description: "",
-      promo: true,
-      loading: false
+      promo: true
     };
+  },
+  computed: {
+    loading() {
+      return this.$store.getters['shared/loading']; // Подключение лоудера из shared модуля
+    },
+    error() {
+      return this.$store.getters['shared/error']; // Отображение ошибки из shared модуля
+    }
   },
   methods: {
     createAd() {
@@ -90,16 +104,13 @@ export default {
           promo: this.promo,
           src: "https://cdn.vuetifyjs.com/images/cards/cooking.png"
         };
-        this.loading = true;
         this.$store.dispatch("ads/createAd", ad) // Используем namespaced путь
           .then(() => {
             console.log('Ad created:', ad);
             this.$router.push("/");
-            this.loading = false;
           })
           .catch((error) => {
-            console.error('Error creating ad:', error);
-            this.loading = false;
+            console.error('Error creating ad:', error.message);
           });
       }
     }
