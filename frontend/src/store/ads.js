@@ -7,7 +7,7 @@ export default {
         promo: true,
         src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
         id: "1",
-        userId: "1"
+        userId: "1750186386368"
       },
       {
         title: "Second",

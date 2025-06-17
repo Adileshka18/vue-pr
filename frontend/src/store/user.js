@@ -26,8 +26,8 @@ export default {
     },
 
     async registerUser({ commit }, { email, password }) {
-      commit('shared/clearError'); // Полный путь
-      commit('shared/setLoading', true); // Полный путь
+      commit('shared/clearError', null, { root: true }); // Добавлен { root: true }
+      commit('shared/setLoading', true, { root: true }); // Добавлен { root: true }
 
       try {
         await new Promise((resolve, reject) => {
@@ -43,18 +43,18 @@ export default {
         const newUser = new User(Date.now(), email, password);
         commit('setUser', newUser);
         localStorage.setItem('user', JSON.stringify(newUser));
-        commit('shared/setLoading', false); // Полный путь
+        commit('shared/setLoading', false, { root: true }); // Добавлен { root: true }
         return Promise.resolve(newUser);
       } catch (error) {
-        commit('shared/setLoading', false); // Полный путь
-        commit('shared/setError', error.message); // Полный путь
+        commit('shared/setLoading', false, { root: true }); // Добавлен { root: true }
+        commit('shared/setError', error.message, { root: true }); // Добавлен { root: true }
         throw error;
       }
     },
 
     async loginUser({ commit }, { email, password }) {
-      commit('shared/clearError'); // Полный путь
-      commit('shared/setLoading', true); // Полный путь
+      commit('shared/clearError', null, { root: true }); // Добавлен { root: true }
+      commit('shared/setLoading', true, { root: true }); // Добавлен { root: true }
 
       try {
         let storedUser = JSON.parse(localStorage.getItem('user'));
@@ -74,11 +74,11 @@ export default {
         });
 
         commit('setUser', storedUser);
-        commit('shared/setLoading', false); // Полный путь
+        commit('shared/setLoading', false, { root: true }); // Добавлен { root: true }
         return Promise.resolve();
       } catch (error) {
-        commit('shared/setLoading', false); // Полный путь
-        commit('shared/setError', error.message); // Полный путь
+        commit('shared/setLoading', false, { root: true }); // Добавлен { root: true }
+        commit('shared/setError', error.message, { root: true }); // Добавлен { root: true }
         throw error;
       }
     },
@@ -86,7 +86,7 @@ export default {
     logoutUser({ commit }) {
       commit('setUser', null);
       localStorage.removeItem('user');
-      commit('shared/clearError'); // Полный путь
+      commit('shared/clearError', null, { root: true }); // Добавлен { root: true }
       return Promise.resolve();
     },
   },

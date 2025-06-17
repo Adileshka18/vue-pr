@@ -23,6 +23,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
+            <!-- <modal-dialog :ad="ad" @update:ad="ad = $event" v-if="isOwner"></modal-dialog> -->
             <modal-dialog :ad="ad" @update:ad="ad = $event"></modal-dialog>
             <v-btn class="success" color="green">Buy</v-btn>
           </v-card-actions>
@@ -49,7 +50,17 @@ export default {
       const ad = this.adById(id); // Вызываем геттер как функцию
       console.log('Ad data:', ad); // Отладка
       return ad
-    }
+    },
+
+
+    // isOwner() {
+    //   const user = this.$store.getters['user/user'];
+    //   const userId = user ? user.id : null;
+    //   console.log('isOwner check:', this.ad.userId, userId, user); // Улучшенная отладка
+    //   return this.ad.userId === userId;
+    // }
+
+
   },
   methods: {
     onImageError() {
