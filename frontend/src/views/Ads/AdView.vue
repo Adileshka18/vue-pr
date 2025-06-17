@@ -23,7 +23,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn class="warning" color="orange">Edit</v-btn>
+            <modal-dialog></modal-dialog>
             <v-btn class="success" color="green">Buy</v-btn>
           </v-card-actions>
         </v-card>
@@ -37,16 +37,18 @@
 
 <script>
 import { mapGetters } from 'vuex'; // Импорт mapGetters
+import EditAdModal from './EditAdModal'
 
 export default {
+  props: ['id'],
   computed: {
     ...mapGetters('ads', ['adById']), // Подключение геттера из модуля ads
     ad() {
-      const id = this.$route.params.id; // Получаем id из параметров маршрута
+      const id = this.id
       console.log('Fetching ad with id:', id); // Отладка
       const ad = this.adById(id); // Вызываем геттер как функцию
       console.log('Ad data:', ad); // Отладка
-      return ad || null; // Убеждаемся, что возвращается null, если не найдено
+      return ad
     }
   },
   methods: {
@@ -58,6 +60,9 @@ export default {
         console.error('No ad data available to update image');
       }
     }
+  },
+  components: {
+    'modal-dialog': EditAdModal
   }
 };
 </script>
