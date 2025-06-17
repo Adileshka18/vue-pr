@@ -39,6 +39,13 @@ export default {
     addAd(state, ad) {
       const userId = ad.userId || (this.state.user && this.state.user.user && this.state.user.user.id) || "1";
       state.ads.push({ ...ad, id: Date.now().toString(), userId }); // Генерируем уникальный ID и добавляем userId
+    },
+    updateAd(state, { title, desc, id }) {
+      const ad = state.ads.find(a => {
+        return a.id === id
+      })
+      ad.title = title
+      ad.desc = desc
     }
   },
   actions: {
@@ -72,6 +79,29 @@ export default {
       } catch (error) {
         console.error('Create Ad error:', error.message);
         throw error; // Передаем ошибку дальше для обработки в компоненте
+      }
+    },
+    async updateAd({ commit }, { title, desc, id }) {
+      commit('shared/clearError', null, { root: true }) // Очищаем ошибки с указанием модуля shared
+      commit('shared/setLoading', true, { root: true }) // Устанавливаем загрузку с указанием модуля shared
+
+      // Заглушка запроса
+      let isRequestOk = true
+      let promise = new Promise(function(resolve) {
+        resolve('Done')
+      });
+
+      if (isRequestOk) {
+        await promise.then(() => {
+          commit('updateAd', { title, desc, id })
+          commit('shared/setLoading', false, { root: true }) // Снимаем загрузку с указанием модуля shared
+        })
+      } else {
+        await promise.then(() => {
+          commit('shared/setLoading', false, { root: true }) // Снимаем загрузку с указанием модуля shared
+          commit('shared/setError', 'Ошибка редактирования объявления', { root: true }) // Устанавливаем ошибку с указанием модуля shared
+          throw 'Упс... Ошибка редактирования объявления'
+        })
       }
     }
   },

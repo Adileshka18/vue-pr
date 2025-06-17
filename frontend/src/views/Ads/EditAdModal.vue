@@ -65,11 +65,13 @@ export default {
     },
     onSave() {
       if (this.editedTitle !== '' && this.editedDesc !== '') {
-        this.$store.dispatch('updateAd', {
+        this.$store.dispatch('ads/updateAd', {
           title: this.editedTitle,
           desc: this.editedDesc,
           id: this.ad.id
         })
+        // Обновляем проп ad локально, чтобы принудить перерендер
+        this.$emit('update:ad', { ...this.ad, title: this.editedTitle, desc: this.editedDesc });
         this.modal = false
       }
     }
