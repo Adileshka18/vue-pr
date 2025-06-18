@@ -39,6 +39,11 @@ export default {
     createAd(state, payload) {
       state.ads.push(payload);
     },
+    updateAd(state, { title, desc, id }) {
+      const ad = state.ads.find(a => a.id === id);
+      ad.title = title;
+      ad.desc = desc;
+    },
   },
   actions: {
     async createAd({ commit, getters }, payload) {
@@ -48,7 +53,6 @@ export default {
       commit('clearError');
       commit('setLoading', true);
 
-      // Имитация запроса на сервер
       let isRequestOk = true;
       let promise = new Promise(function (resolve) {
         setTimeout(() => resolve('Done'), 3000);
@@ -64,6 +68,28 @@ export default {
           commit('setLoading', false);
           commit('setError', 'Ошибка создания объявления');
           throw 'Упс... Ошибка создания объявления';
+        });
+      }
+    },
+    async updateAd({ commit }, { title, desc, id }) {
+      commit('clearError');
+      commit('setLoading', true);
+
+      let isRequestOk = true;
+      let promise = new Promise(function (resolve) {
+        setTimeout(() => resolve('Done'), 3000);
+      });
+
+      if (isRequestOk) {
+        await promise.then(() => {
+          commit('updateAd', { title, desc, id });
+          commit('setLoading', false);
+        });
+      } else {
+        await promise.then(() => {
+          commit('setLoading', false);
+          commit('setError', 'Ошибка редактирования объявления');
+          throw 'Упс... Ошибка редактирования объявления';
         });
       }
     },
