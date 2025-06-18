@@ -21,32 +21,30 @@
     </v-row>
 
     <!-- Grid объявлений -->
-    <v-container grid-list-lg>
-      <v-row wrap>
-        <v-col
-          v-for="ad in ads"
-          :key="ad.id"
-          :cols="12"
-          :sm="6"
-          :md="4"
-        >
-          <v-card>
-            <v-img :src="ad.src" height="200px"></v-img>
-            <v-card-title>
-              <div>
-                <h3 class="headline mb-0">{{ ad.title }}</h3>
-                <div>{{ ad.desc }}</div>
-              </div>
-            </v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn text :to="'/ad/' + ad.id">Open</v-btn>
-              <v-btn raised color="primary">Buy</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
+    <v-row dense>
+      <v-col
+        v-for="ad in ads"
+        :key="ad.id"
+        cols="12"
+        sm="6"
+        md="4"
+      >
+        <v-card>
+          <v-img :src="ad.src" height="200px"></v-img>
+          <v-card-title>
+            <div>
+              <h3 class="headline mb-0">{{ ad.title }}</h3>
+              <div>{{ ad.desc }}</div>
+            </div>
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn variant="text" :to="'/ad/' + ad.id">Open</v-btn>
+            <buy-ad-modal :ad="ad"></buy-ad-modal>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -58,8 +56,8 @@ export default {
     },
     ads() {
       return this.$store.getters.ads;
-    }
-  }
+    },
+  },
 };
 </script>
 
