@@ -12,7 +12,7 @@ export default {
   },
   mutations: {
     setUser(state, payload) {
-      console.log(payload);
+      console.log('setUser payload:', payload);
       state.user = payload;
     },
   },
@@ -21,46 +21,42 @@ export default {
       commit('clearError');
       commit('setLoading', true);
 
-      // Имитация запроса на сервер
-      let isRequestOk = false;
-      let promise = new Promise(function (resolve) {
-        setTimeout(() => resolve('Done'), 3000);
+      let isRequestOk = true; // ✅ Изменено на true для успешной имитации
+
+      const promise = new Promise((resolve) => {
+        setTimeout(() => resolve('Done'), 1000);
       });
 
       if (isRequestOk) {
-        await promise.then(() => {
-          commit('setUser', new User(1, email, password));
-          commit('setLoading', false);
-        });
+        await promise;
+        commit('setUser', new User(1, email, password));
+        commit('setLoading', false);
       } else {
-        await promise.then(() => {
-          commit('setLoading', false);
-          commit('setError', 'Ошибка регистрации');
-          throw 'Упс... Ошибка регистрации';
-        });
+        await promise;
+        commit('setLoading', false);
+        commit('setError', 'Ошибка регистрации');
+        throw new Error('Упс... Ошибка регистрации');
       }
     },
     async loginUser({ commit }, { email, password }) {
       commit('clearError');
       commit('setLoading', true);
 
-      // Имитация запроса на сервер
-      let isRequestOk = false;
-      let promise = new Promise(function (resolve) {
-        setTimeout(() => resolve('Done'), 3000);
+      let isRequestOk = true; // ✅ Изменено на true для успешной имитации
+
+      const promise = new Promise((resolve) => {
+        setTimeout(() => resolve('Done'), 1000);
       });
 
       if (isRequestOk) {
-        await promise.then(() => {
-          commit('setUser', new User(1, email, password));
-          commit('setLoading', false);
-        });
+        await promise;
+        commit('setUser', new User(1, email, password));
+        commit('setLoading', false);
       } else {
-        await promise.then(() => {
-          commit('setLoading', false);
-          commit('setError', 'Ошибка логина или пароля');
-          throw 'Упс... Ошибка логина или пароля';
-        });
+        await promise;
+        commit('setLoading', false);
+        commit('setError', 'Ошибка логина или пароля');
+        throw new Error('Упс... Ошибка логина или пароля');
       }
     },
   },
