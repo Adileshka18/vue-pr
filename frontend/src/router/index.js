@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import AdListView from '../views/Ads/AdListView.vue';
 import AdView from '../views/Ads/AdView.vue';
+import AdListView from '../views/Ads/AdListView.vue';
 import NewAdView from '../views/Ads/NewAdView.vue';
 import LoginView from '../views/Auth/LoginView.vue';
 import RegistrationView from '../views/Auth/RegistrationView.vue';
-import OrdersView from '../views/User/OrdersView.vue';
-import AuthGuard from './auth-guard';
+import OrdersView from '../views/OrdersView.vue'; 
+import authGuard from './auth-guard';
 
 const routes = [
   {
@@ -17,20 +17,20 @@ const routes = [
   {
     path: '/ad/:id',
     name: 'ad',
-    component: AdView,
     props: true,
+    component: AdView,
   },
   {
     path: '/list',
     name: 'list',
     component: AdListView,
-    beforeEnter: AuthGuard,
+    beforeEnter: authGuard,
   },
   {
     path: '/new',
     name: 'newAd',
     component: NewAdView,
-    beforeEnter: AuthGuard,
+    beforeEnter: authGuard,
   },
   {
     path: '/login',
@@ -39,19 +39,19 @@ const routes = [
   },
   {
     path: '/registration',
-    name: 'reg',
+    name: 'registration',
     component: RegistrationView,
   },
   {
     path: '/orders',
     name: 'orders',
     component: OrdersView,
-    beforeEnter: AuthGuard,
+    beforeEnter: authGuard,
   },
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(process.env.BASE_URL),
   routes,
 });
 
