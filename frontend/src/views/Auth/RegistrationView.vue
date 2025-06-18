@@ -41,7 +41,8 @@
             <v-btn
               color="primary"
               @click="onSubmit"
-              :disabled="!valid"
+              :loading="loading"
+              :disabled="!valid || loading"
             >
               Create Account
             </v-btn>
@@ -77,6 +78,9 @@ export default {
         v => v === this.password || 'Passwords must match',
       ];
     },
+    loading() {
+      return this.$store.getters.loading;
+    },
   },
   methods: {
     onSubmit() {
@@ -85,7 +89,13 @@ export default {
           email: this.email,
           password: this.password,
         };
-        this.$store.dispatch('registerUser', user);
+        this.$store.dispatch('registerUser', user)
+          .then(() => {
+            this.$router.push('/');
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
   },
