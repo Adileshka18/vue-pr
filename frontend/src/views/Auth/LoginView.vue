@@ -7,6 +7,9 @@
             <v-toolbar-title>Login</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
+            <v-alert v-if="$route.query.loginError" type="error" class="mb-4">
+              Пожалуйста, войдите в аккаунт
+            </v-alert>
             <v-form ref="form" v-model="valid">
               <v-text-field
                 prepend-icon="mdi-account"
@@ -76,6 +79,9 @@ export default {
         this.$store.dispatch('loginUser', user)
           .then(() => {
             this.$router.push('/');
+            this.email = '';
+            this.password = '';
+            this.$refs.form.resetValidation();
           })
           .catch((err) => {
             console.log(err);

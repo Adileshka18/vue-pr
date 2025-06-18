@@ -11,6 +11,12 @@
         <v-list-item v-for="link in links" :key="link.title" :to="link.url" :prepend-icon="link.icon">
           <v-list-item-title>{{ link.title }}</v-list-item-title>
         </v-list-item>
+        <v-list-item @click="onLogout" v-if="isUserLoggedIn">
+          <template v-slot:prepend>
+            <v-icon icon="mdi-exit-to-app"></v-icon>
+          </template>
+          <v-list-item-title>Logout</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -27,9 +33,13 @@
 
       <!-- Верхнее меню -->
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn v-for="link in links" :key="link.title" :to="link.url" variant="text">
-          <v-icon start>{{ link.icon }}</v-icon>
+        <v-btn v-for="link in links" :key="link.title" :to="link.url">
+          <v-icon start :icon="link.icon"></v-icon>
           {{ link.title }}
+        </v-btn>
+        <v-btn @click="onLogout" v-if="isUserLoggedIn">
+          <v-icon start icon="mdi-exit-to-app"></v-icon>
+          Logout
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
@@ -48,10 +58,7 @@
     >
       {{ $store.getters.error }}
       <template v-slot:actions>
-        <v-btn
-          variant="text"
-          @click="closeError"
-        >
+        <v-btn variant="text" @click="closeError">
           Close
         </v-btn>
       </template>
@@ -65,24 +72,40 @@ export default {
     return {
       drawer: false,
       showSnackbar: false,
-      links: [
-        { title: 'Login', icon: 'mdi-lock', url: '/login' },
-        { title: 'Registration', icon: 'mdi-face', url: '/registration' },
-        { title: 'Orders', icon: 'mdi-bookmark-multiple-outline', url: '/orders' },
-        { title: 'New ad', icon: 'mdi-note-plus-outline', url: '/new' },
-        { title: 'My ads', icon: 'mdi-view-list-outline', url: '/list' },
-      ],
     };
+  },
+  computed: {
+    isUserLoggedIn() {
+      return true; //return this.$store.getters.isUserLoggedIn;
+    },
+    links() {
+      if (this.isUserLoggedIn) {
+        return [
+          { title: 'Orders', icon: 'mdi-bookmark-multiple-outline', url: '/orders' },
+          { title: 'New ad', icon: 'mdi-note-plus-outline', url: '/new' },
+          { title: 'My ads', icon: 'mdi-view-list-outline', url: '/list' },
+        ];
+      } else {
+        return [
+          { title: 'Login', icon: 'mdi-lock', url: '/login' },
+          { title: 'Registration', icon: 'mdi-face', url: '/registration' },
+        ];
+      }
+    },
   },
   watch: {
     '$store.getters.error'(newValue) {
-      this.showSnackbar = !!newValue; // Показывать снекбар, если ошибка не null
+      this.showSnackbar = !!newValue;
     },
   },
   methods: {
     closeError() {
       this.$store.dispatch('clearError');
       this.showSnackbar = false;
+    },
+    onLogout() {
+      this.$store.dispatch('logoutUser');
+      this.$router.push('/');
     },
   },
 };

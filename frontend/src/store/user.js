@@ -22,7 +22,7 @@ export default {
       commit('setLoading', true);
 
       // Имитация запроса на сервер
-      let isRequestOk = false;
+      let isRequestOk = true; // Изменено на true для успешного выполнения
       let promise = new Promise(function (resolve) {
         setTimeout(() => resolve('Done'), 3000);
       });
@@ -45,7 +45,7 @@ export default {
       commit('setLoading', true);
 
       // Имитация запроса на сервер
-      let isRequestOk = false;
+      let isRequestOk = true; // Изменено на true для успешного выполнения
       let promise = new Promise(function (resolve) {
         setTimeout(() => resolve('Done'), 3000);
       });
@@ -63,10 +63,16 @@ export default {
         });
       }
     },
+    logoutUser({ commit }) {
+      commit('setUser', null);
+    },
   },
   getters: {
     user(state) {
       return state.user;
+    },
+    isUserLoggedIn(state) {
+      return state.user !== null;
     },
   },
 };
