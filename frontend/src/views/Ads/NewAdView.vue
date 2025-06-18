@@ -75,25 +75,36 @@ export default {
   data() {
     return {
       valid: false,
-      title: "",
-      description: "",
+      title: '',
+      description: '',
       promo: true,
-      loading: false,
     };
+  },
+  computed: {
+    loading() {
+      return this.$store.getters.loading;
+    },
   },
   methods: {
     createAd() {
       if (this.$refs.form.validate()) {
-        this.loading = true;
         const ad = {
           title: this.title,
           desc: this.description,
           promo: this.promo,
-          src: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
+          src: 'https://cdn.vuetifyjs.com/images/cards/cooking.png',
         };
-        this.$store.dispatch("createAd", ad).finally(() => {
-          this.loading = false;
-        });
+        this.$store.dispatch('createAd', ad)
+          .then(() => {
+            this.$router.push('/list');
+            this.title = '';
+            this.description = '';
+            this.promo = true;
+            this.$refs.form.resetValidation();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
   },
